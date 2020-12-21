@@ -95,13 +95,13 @@ mvn-deploy-proxy:
     - mvn apigee-enterprise:deploy -P$MAVEN_PROFILE -Dapigee.org=$APIGEE_ORG -Dapigee.username=$APIGEE_CREDS_USR -Dapigee.password=$APIGEE_CREDS_PSW -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX
   only:
     - master
-    
+
 test-integration:
   stage: test-integration
   image: node:12-alpine 
   script:
     - sed -i "s/organization_hostname/$TEST_HOST/g" ./test/integration/features/support/init.js
-    - node ./node_modules/cucumber/bin/cucumber-js ./test/integration --format json:./reports.json
+    - node ./node_modules/cucumber/bin/cucumber-js ./test/integration --format json:./report.json
     - node ./test/integration/index.js
   artifacts:
     paths:
