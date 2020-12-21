@@ -14,7 +14,7 @@ cache:
   paths:
     - .m2/repository/
     - target/
-    - node-modules/
+    - node_modules/
 
 stages:
   - install-dependencies
@@ -26,11 +26,13 @@ stages:
 
 install-dependencies:
   stage: install-dependencies
+  image: node:12-alpine 
   script:
     - npm install --silent --no-fund
 
 static-code-analysis:
   stage: static-code-analysis
+  image: node:12-alpine 
   script:
     #- npm install -g apigeelint
     - apigeelint -s ./apiproxy/ -f html.js > validate-proxy-result.html
@@ -49,3 +51,9 @@ mvn-deploy:
   stage: mvn-deploy
   script:
     - mvn apigee-enterprise:deploy -P$MAVEN_PROFILE -Dapigee.org=$APIGEE_ORG -Dapigee.username=$APIGEE_CREDS_USR -Dapigee.password=$APIGEE_CREDS_PSW -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX
+
+test-integration:
+  stage: test-integration
+  image: node:12-alpine 
+  script:
+    - node ./node_modules/cucumber/bin/cucumber-js ./target/test/integration --format json:./target/reports.json
