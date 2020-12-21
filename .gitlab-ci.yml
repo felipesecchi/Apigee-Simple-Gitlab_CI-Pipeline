@@ -8,6 +8,7 @@ variables:
   APIGEE_ORG: "emea-demo7"
   GIT_BRANCH: "main"
   AUTHOR_EMAIL: "clalevee@gmail.com"
+  TEST_HOST: "$APIGEE_ORG-MAVEN_PROFILE.apigee.net"
   # APIGEE_CREDS_USR & APIGEE_CREDS_PSW are stored in CI/CD variable settings
 
 cache:
@@ -19,6 +20,7 @@ cache:
 stages:
   - install-dependencies
   - static-code-analysis
+  - unit-test
   - mvn-package
   - mvn-config
   - mvn-deploy
@@ -30,16 +32,36 @@ install-dependencies:
   script:
     - npm install --silent --no-fund
 
-static-code-analysis:
+
+apigeelint:
   stage: static-code-analysis
   image: node:12-alpine 
   script:
-    #- npm install -g apigeelint
     - ./node_modules/apigeelint/cli.js -s ./apiproxy -f html.js -e PO013 > ./target/apigeelint-out.html
   artifacts:
     paths:
     - ./target/apigeelint-out.html
     expire_in: 30 minute
+
+
+eslint:
+  stage: static-code-analysis
+  image: node:12-alpine 
+  script:
+    - ./node_modules/eslint/bin/eslint.js -c ./.eslintrc-jsc.yml --format html . > ./target/eslint-out.html
+  artifacts:
+    paths:
+    - ./target/eslint-out.html
+
+
+mocha:
+  stage: unit-test
+  image: node:12-alpine 
+  script:
+    - ./node_modules/nyc/bin/nyc.js --reporter=html --reporter=text ./node_modules/mocha/bin/_mocha ./test/unit
+  artifacts:
+    paths:
+    - index.html
 
 
 mvn-package:
@@ -61,6 +83,7 @@ test-integration:
   stage: test-integration
   image: node:12-alpine 
   script:
+    - sed -i "s/organization_hostname/$TEST_HOST/g" ./target/test/integration/features/support/init.js
     - node ./node_modules/cucumber/bin/cucumber-js ./target/test/integration --format json:./target/reports.json
   artifacts:
     paths:
