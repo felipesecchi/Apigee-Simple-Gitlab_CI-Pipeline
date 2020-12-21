@@ -49,12 +49,13 @@ eslint:
   stage: static-code-analysis
   image: node:12-alpine 
   script:
-    - ./node_modules/eslint/bin/  -c ./.eslintrc-jsc.yml --format html .
+    #- ./node_modules/eslint/bin/eslint.js -c ./.eslintrc-jsc.yml --format html .
+    - ./node_modules/eslint/bin/eslint.js -c ./.eslintrc-jsc.yml --format html ./apiproxy/resources/jsc
     #> ./target/eslint-out.html
   artifacts:
     paths:
     - ./target/eslint-out.html
-
+s
 
 mocha:
   stage: unit-test
