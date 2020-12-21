@@ -96,6 +96,7 @@ mvn-deploy-proxy:
   only:
     - master
 
+    
 test-integration:
   stage: test-integration
   image: node:12-alpine 
