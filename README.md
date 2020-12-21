@@ -35,7 +35,7 @@ The CICD pipeline includes:
 
 ### GitLab
 
-### GitHub
+The setup described in this reference implementation is based on GitLab-ci. So, you must have a GitLab account you will use to create a project mirrored with your GitHub repository.
 
 ### API Proxy
 
