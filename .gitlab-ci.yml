@@ -55,7 +55,7 @@ eslint:
   artifacts:
     paths:
     - ./target/eslint-out.html
-s
+
 
 mocha:
   stage: unit-test
