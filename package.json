@@ -17,7 +17,8 @@
       "lint": "./node_modules/apigeelint/cli.js -s ./apiproxy -f html.js -e PO013"
     },
     "dependencies": {
-      "apickli": "^2.3.3",
+      "cucumber-html-reporter": "latest",
+      "apickli": "latest",
       "apigeelint": "^0.4.8",
       "cucumber": "^6.0.5",
       "eslint": "^7.0.0",

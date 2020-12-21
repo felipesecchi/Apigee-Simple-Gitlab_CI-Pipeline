@@ -33,7 +33,6 @@ install-dependencies:
   script:
     - npm install --silent --no-fund
 
-
 apigeelint:
   stage: static-code-analysis
   image: node:12-alpine 
@@ -44,7 +43,6 @@ apigeelint:
     - ./target/apigeelint-out.html
     expire_in: 30 minute
 
-
 eslint:
   stage: static-code-analysis
   image: node:12-alpine 
@@ -54,7 +52,6 @@ eslint:
     paths:
     - ./target/eslint-out.html
 
-
 mocha:
   stage: unit-test
   image: node:12-alpine 
@@ -63,7 +60,6 @@ mocha:
   artifacts:
     paths:
     - ./coverage/index.html
-
 
 mvn-package:
   stage: mvn-package
@@ -85,8 +81,9 @@ test-integration:
   image: node:12-alpine 
   script:
     - sed -i "s/organization_hostname/$TEST_HOST/g" ./target/test/integration/features/support/init.js
-    - node ./node_modules/cucumber/bin/cucumber-js ./target/test/integration --format json:./target/reports.json
+    - node ./node_modules/cucumber/bin/cucumber-js ./target/test/integration --format json:./reports.json
+    - node ./test/intgeration/index.js
   artifacts:
     paths:
-    - ./target/reports.json
+    - ./cucumber_report.html
     expire_in: 30 minute
