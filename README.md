@@ -42,7 +42,7 @@ The setup described in this reference implementation is based on GitLab-ci. So, 
 The folder `airports-cicd-v1` includes a simple API proxy bundle, a simple Apigee configuration file as well as the
 following resources:
 
-- [Gitlab-ci file](./gitlab-ci.yml) to define a Jenkins
+- [Gitlab-ci file](./.gitlab-ci.yml) to define a Jenkins
   multi-branch pipeline.
 - [Test Folder](./test) to hold the unit and integration
   tests.
