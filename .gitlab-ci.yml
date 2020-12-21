@@ -26,6 +26,7 @@ stages:
   - mvn-deploy
   - test-integration
 
+
 install-dependencies:
   stage: install-dependencies
   image: node:12-alpine 
@@ -58,6 +59,8 @@ mocha:
   stage: unit-test
   image: node:12-alpine 
   script:
+    - ls ./node_modules/nyc/bin/nyc.js
+    - ls ./node_modules/mocha/bin/_mocha
     - ./node_modules/nyc/bin/nyc.js --reporter=html --reporter=text ./node_modules/mocha/bin/_mocha ./test/unit
   artifacts:
     paths:
