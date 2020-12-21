@@ -14,11 +14,26 @@ cache:
   paths:
     - .m2/repository/
     - target/
+    - node-modules/
 
 stages:
+  - install-dependencies
+  - static-code-analysis
   - mvn-package
   - mvn-config
   - mvn-deploy
+  - test-integration
+
+install-dependencies:
+  stage: install-dependencies
+  script:
+    - npm install --silent --no-fund
+
+static-code-analysis:
+  stage: static-code-analysis
+  script:
+    #- npm install -g apigeelint
+    - apigeelint -s ./apiproxy/ -f html.js > validate-proxy-result.html
 
 mvn-package:
   stage: mvn-package
