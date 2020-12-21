@@ -72,28 +72,36 @@ mvn-package:
   stage: mvn-package
   script:
     - mvn process-resources -P$MAVEN_PROFILE -Dcommit=$GIT_COMMIT -Dbranch=$GIT_BRANCH -Dauthor=$AUTHOR_EMAIL -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX
+  only:
+    - master
 
 mvn-config:
   stage: mvn-config
   script:
     - mvn apigee-enterprise:configure -P$MAVEN_PROFILE -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX 
-    
+  only:
+    - master
+
 mvn-deploy-config:
   stage: mvn-deploy
   script:
     - mvn install -P$MAVEN_PROFILE -Dapigee.org=$APIGEE_ORG -Dapigee.username=$APIGEE_CREDS_USR -Dapigee.password=$APIGEE_CREDS_PSW -Dapigee.config.file=./EdgeConfig/edge.json -Dapigee.config.options=update
+  only:
+    - master
 
 mvn-deploy-proxy:
   stage: mvn-deploy
   script:
     - mvn apigee-enterprise:deploy -P$MAVEN_PROFILE -Dapigee.org=$APIGEE_ORG -Dapigee.username=$APIGEE_CREDS_USR -Dapigee.password=$APIGEE_CREDS_PSW -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX
-
+  only:
+    - master
+    
 test-integration:
   stage: test-integration
   image: node:12-alpine 
   script:
-    - sed -i "s/organization_hostname/$TEST_HOST/g" ./target/test/integration/features/support/init.js
-    - node ./node_modules/cucumber/bin/cucumber-js ./target/test/integration --format json:./reports.json
+    - sed -i "s/organization_hostname/$TEST_HOST/g" ./test/integration/features/support/init.js
+    - node ./node_modules/cucumber/bin/cucumber-js ./test/integration --format json:./reports.json
     - node ./test/integration/index.js
   artifacts:
     paths:
