@@ -69,9 +69,14 @@ mvn-package:
 mvn-config:
   stage: mvn-config
   script:
-    - mvn apigee-enterprise:configure -P$MAVEN_PROFILE -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX -Dapigee.config.dir=resources/edge
+    - mvn apigee-enterprise:configure -P$MAVEN_PROFILE -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX 
+    
+mvn-deploy-config:
+  stage: mvn-deploy
+  script:
+    - mvn apigee-enterprise:install -P$MAVEN_PROFILE -Dapigee.org=$APIGEE_ORG -Dapigee.username=$APIGEE_CREDS_USR -Dapigee.password=$APIGEE_CREDS_PSW -Dapigee.config.file=resources/edge -Dapigee.config.options=update
 
-mvn-deploy:
+mvn-deploy-proxy:
   stage: mvn-deploy
   script:
     - mvn apigee-enterprise:deploy -P$MAVEN_PROFILE -Dapigee.org=$APIGEE_ORG -Dapigee.username=$APIGEE_CREDS_USR -Dapigee.password=$APIGEE_CREDS_PSW -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX
