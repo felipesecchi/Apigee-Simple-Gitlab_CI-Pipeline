@@ -69,7 +69,7 @@ mvn-package:
 mvn-config:
   stage: mvn-config
   script:
-    - mvn apigee-enterprise:configure -P$MAVEN_PROFILE -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX
+    - mvn apigee-enterprise:configure -P$MAVEN_PROFILE -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX -Dapigee.config.dir=resources/edge
 
 mvn-deploy:
   stage: mvn-deploy
@@ -82,7 +82,7 @@ test-integration:
   script:
     - sed -i "s/organization_hostname/$TEST_HOST/g" ./target/test/integration/features/support/init.js
     - node ./node_modules/cucumber/bin/cucumber-js ./target/test/integration --format json:./reports.json
-    - node ./test/intgeration/index.js
+    - node ./test/integration/index.js
   artifacts:
     paths:
     - ./cucumber_report.html
