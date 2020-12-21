@@ -8,7 +8,7 @@ variables:
   APIGEE_ORG: "emea-demo7"
   GIT_BRANCH: "main"
   AUTHOR_EMAIL: "clalevee@gmail.com"
-  TEST_HOST: "$APIGEE_ORG-MAVEN_PROFILE.apigee.net"
+  TEST_HOST: "$APIGEE_ORG-$MAVEN_PROFILE.apigee.net"
   # APIGEE_CREDS_USR & APIGEE_CREDS_PSW are stored in CI/CD variable settings
 
 cache:
@@ -49,9 +49,7 @@ eslint:
   stage: static-code-analysis
   image: node:12-alpine 
   script:
-    #- ./node_modules/eslint/bin/eslint.js -c ./.eslintrc-jsc.yml --format html .
-    - ./node_modules/eslint/bin/eslint.js -c ./.eslintrc-jsc.yml --format html ./apiproxy/resources/jsc
-    #> ./target/eslint-out.html
+      - ./node_modules/eslint/bin/eslint.js -c ./.eslintrc-jsc.yml --format html ./apiproxy/resources/jsc > ./target/eslint-out.html
   artifacts:
     paths:
     - ./target/eslint-out.html
@@ -64,7 +62,7 @@ mocha:
     - ./node_modules/nyc/bin/nyc.js --reporter=html --reporter=text ./node_modules/mocha/bin/_mocha ./test/unit
   artifacts:
     paths:
-    - index.html
+    - ./coverage/index.html
 
 
 mvn-package:
