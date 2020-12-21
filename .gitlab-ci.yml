@@ -35,7 +35,8 @@ static-code-analysis:
   image: node:12-alpine 
   script:
     #- npm install -g apigeelint
-    - apigeelint -s ./apiproxy/ -f html.js > validate-proxy-result.html
+    - ./node_modules/apigeelint/cli.js -s ./apiproxy -f html.js -e PO013 > apigeelint-out.html
+
 
 mvn-package:
   stage: mvn-package
