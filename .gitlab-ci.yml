@@ -49,7 +49,7 @@ eslint:
   stage: static-code-analysis
   image: node:12-alpine 
   script:
-    - ./node_modules/eslint/bin/   -c ./.eslintrc-jsc.yml --format html ./apiproxy/resources/jsc
+    - ./node_modules/eslint/bin/  -c ./.eslintrc-jsc.yml --format html .
     #> ./target/eslint-out.html
   artifacts:
     paths:
