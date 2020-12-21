@@ -81,7 +81,7 @@ mvn-config:
 mvn-deploy-config:
   stage: mvn-deploy
   script:
-    - mvn install -P$MAVEN_PROFILE -Dapigee.org=$APIGEE_ORG -Dapigee.username=$APIGEE_CREDS_USR -Dapigee.password=$APIGEE_CREDS_PSW -Dapigee.config.file=resources/edge -Dapigee.config.options=update
+    - mvn install -P$MAVEN_PROFILE -Dapigee.org=$APIGEE_ORG -Dapigee.username=$APIGEE_CREDS_USR -Dapigee.password=$APIGEE_CREDS_PSW -Dapigee.config.file=./EdgeConfig/edge.json -Dapigee.config.options=update
 
 mvn-deploy-proxy:
   stage: mvn-deploy
