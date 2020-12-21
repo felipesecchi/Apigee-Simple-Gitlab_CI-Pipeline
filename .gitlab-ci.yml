@@ -42,6 +42,9 @@ apigeelint:
     paths:
     - ./target/apigeelint-out.html
     expire_in: 30 minute
+  only:
+    - master
+
 
 eslint:
   stage: static-code-analysis
@@ -51,6 +54,8 @@ eslint:
   artifacts:
     paths:
     - ./target/eslint-out.html
+  only:
+    - master
 
 mocha:
   stage: unit-test
@@ -60,6 +65,8 @@ mocha:
   artifacts:
     paths:
     - ./coverage/index.html
+  only:
+    - master
 
 mvn-package:
   stage: mvn-package
