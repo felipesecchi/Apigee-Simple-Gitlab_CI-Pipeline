@@ -15,17 +15,22 @@ cache:
     - .m2/repository/
     - target/
 
-package:
-  stage: package
+stages:
+  - mvn-package
+  - mvn-config
+  - mvn-deploy
+
+mvn-package:
+  stage: mvn-package
   script:
     - mvn process-resources -P$MAVEN_PROFILE -Dcommit=$GIT_COMMIT -Dbranch=$GIT_BRANCH -Dauthor=$AUTHOR_EMAIL -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX
 
-config:
-  stage: config
+mvn-config:
+  stage: mvn-config
   script:
     - mvn apigee-enterprise:configure -P$MAVEN_PROFILE -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX
 
-deploy:
-  stage: deploy
+mvn-deploy:
+  stage: mvn-deploy
   script:
     - mvn apigee-enterprise:deploy -P$MAVEN_PROFILE -Dapigee.org=$APIGEE_ORG -Dapigee.username=$APIGEE_CREDS_USR -Dapigee.password=$APIGEE_CREDS_PSW -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX
