@@ -35,7 +35,11 @@ static-code-analysis:
   image: node:12-alpine 
   script:
     #- npm install -g apigeelint
-    - ./node_modules/apigeelint/cli.js -s ./apiproxy -f html.js -e PO013 > apigeelint-out.html
+    - ./node_modules/apigeelint/cli.js -s ./apiproxy -f html.js -e PO013 > ./target/apigeelint-out.html
+  artifacts:
+    paths:
+    - ./target/apigeelint-out.html
+    expire_in: 30 minute
 
 
 mvn-package:
@@ -58,3 +62,7 @@ test-integration:
   image: node:12-alpine 
   script:
     - node ./node_modules/cucumber/bin/cucumber-js ./target/test/integration --format json:./target/reports.json
+  artifacts:
+    paths:
+    - ./target/reports.json
+    expire_in: 30 minute
