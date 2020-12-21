@@ -7,9 +7,8 @@ variables:
   APIGEE_DEPLOYMENT_SUFFIX: ""
   APIGEE_ORG: "emea-demo7"
   GIT_BRANCH: "main"
-  AUTHOR_EMAIL: "clalevee@gmail.com"
   TEST_HOST: "$APIGEE_ORG-$MAVEN_PROFILE.apigee.net"
-  # APIGEE_CREDS_USR & APIGEE_CREDS_PSW are stored in CI/CD variable settings
+  # AUTHOR_EMAIL, APIGEE_CREDS_USR & APIGEE_CREDS_PSW are stored in CI/CD variable settings
 
 cache:
   paths:
@@ -42,8 +41,6 @@ apigeelint:
     paths:
     - ./target/apigeelint-out.html
     expire_in: 30 minute
-  only:
-    - master
 
 
 eslint:
@@ -54,8 +51,6 @@ eslint:
   artifacts:
     paths:
     - ./target/eslint-out.html
-  only:
-    - master
 
 mocha:
   stage: unit-test
@@ -65,38 +60,27 @@ mocha:
   artifacts:
     paths:
     - ./coverage/index.html
-  only:
-    - master
 
 mvn-package:
   stage: mvn-package
   script:
     - mvn process-resources -P$MAVEN_PROFILE -Dcommit=$GIT_COMMIT -Dbranch=$GIT_BRANCH -Dauthor=$AUTHOR_EMAIL -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX
-  only:
-    - master
 
 mvn-config:
   stage: mvn-config
   script:
     - mvn apigee-enterprise:configure -P$MAVEN_PROFILE -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX 
-  only:
-    - master
 
 mvn-deploy-config:
   stage: mvn-deploy
   script:
     - mvn install -P$MAVEN_PROFILE -Dapigee.org=$APIGEE_ORG -Dapigee.username=$APIGEE_CREDS_USR -Dapigee.password=$APIGEE_CREDS_PSW -Dapigee.config.file=./EdgeConfig/edge.json -Dapigee.config.options=update
-  only:
-    - master
 
 mvn-deploy-proxy:
   stage: mvn-deploy
   script:
-    - mvn apigee-enterprise:deploy -P$MAVEN_PROFILE -Dapigee.org=$APIGEE_ORG -Dapigee.username=$APIGEE_CREDS_USR -Dapigee.password=$APIGEE_CREDS_PSW -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX
-  only:
-    - master
+    - mvn apigee-enterprise:deploy -P$MAVEN_PROFILE -Dapigee.org=$APIGEE_ORG -Dapigee.username=$APIGEE_CREDS_USR -Dapigee.password=$APIGEE_CREDS_PSW -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFI
 
-    
 test-integration:
   stage: test-integration
   image: node:12-alpine 
