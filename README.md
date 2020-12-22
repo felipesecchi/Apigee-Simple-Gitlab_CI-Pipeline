@@ -67,16 +67,34 @@ following resources:
 
 ## CI/CD Configuration Instructions
 
-### Initialize a GitHub Repository
+### Initialize a GitLab (opeion A) GitHub (option B) Repository
 
-Create a GitHub repository to hold your API Proxy. To use the `airports-cicd-v1`
-in a Github repository `github.com/my-user/my-api-proxy-repo` follow these
+Create a GitLab/GitHub repository to hold your API Proxy. 
+
+To use the `Apigee-Simple-Gitlab_CI-Pipeline`
+in a **GitHub** repository `github.com/my-user/my-api-proxy-repo` follow these
 steps:
 
 ```bash
-cd airports-cicd-v1
+git clone git@github.com:g-lalevee/Apigee-Simple-Gitlab_CI-Pipeline.git
+cd Apigee-Simple-Gitlab_CI-Pipeline
 git init
 git remote add origin git@github.com:my-user/my-api-proxy.git
+git checkout -b feature/cicd-pipeline
+git add .
+git commit -m "initial commit"
+git push -u origin feature/cicd-pipeline
+```
+
+<BR>To use the `Apigee-Simple-Gitlab_CI-Pipeline`
+in a **GitLab** repository `gitlab.com/my-user/my-api-proxy-repo` follow these
+steps:
+
+```bash
+git clone git@github.com:g-lalevee/Apigee-Simple-Gitlab_CI-Pipeline.git
+cd Apigee-Simple-Gitlab_CI-Pipeline
+git init
+git remote add origin git@gitlab.com:my-user/my-api-proxy.git
 git checkout -b feature/cicd-pipeline
 git add .
 git commit -m "initial commit"
