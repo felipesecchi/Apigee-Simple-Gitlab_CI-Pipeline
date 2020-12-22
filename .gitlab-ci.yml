@@ -97,8 +97,8 @@ mvn-config:
 mvn-deploy-config:
   stage: mvn-deploy
   script:
-    - sed -i "s/target_apigee_env/$MAVEN_PROFILE/g" ./EdgeConfig/edge.json
-    - mvn install -P$MAVEN_PROFILE -Dapigee.org=$APIGEE_ORG -Dapigee.username=$APIGEE_CREDS_USR -Dapigee.password=$APIGEE_CREDS_PSW -Dapigee.config.file=./EdgeConfig/edge.json -Dapigee.config.options=update
+    - sed -i "s/target_apigee_env/$MAVEN_PROFILE/g" ./target/EdgeConfig/edge.json
+    - mvn install -P$MAVEN_PROFILE -Dapigee.org=$APIGEE_ORG -Dapigee.username=$APIGEE_CREDS_USR -Dapigee.password=$APIGEE_CREDS_PSW -Dapigee.config.file=./target/EdgeConfig/edge.json -Dapigee.config.options=update
 
 mvn-deploy-proxy:
   stage: mvn-deploy
@@ -115,4 +115,4 @@ apickli:
   artifacts:
     paths:
     - ./cucumber_report.html
-    
+
