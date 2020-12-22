@@ -2,14 +2,14 @@
 
 # Apigee CI/CD using GitHub, GitLab CI and Maven 
 
+**This is not an official Google product.**<BR>This implementation is not an official Google product, nor is it part of an official Google product. Support is available on a best-effort basis via GitHub.
+
+***
+
 ## Goal
 
 Simple implementation for a CI/CD pipeline for Apigee using GitHub repository, 
 [CI/CD with GitLab](https://docs.gitlab.com/ee/ci/introduction/) and the [Apigee Deploy Maven Plugin](https://github.com/apigee/apigee-deploy-maven-plugin).
-
-**This is not an official Google product.**<BR>This implementation is not an official Google product, nor is it part of an official Google product. Support is available on a best-effort basis via GitHub.
-
-***
 
 The CICD pipeline includes:
 
@@ -24,6 +24,17 @@ The CICD pipeline includes:
   [Apigee Config Maven Plugin](https://github.com/apigee/apigee-config-maven-plugin)
 - Packaging and deployment of the API proxy bundle using
   [Apigee Deploy Maven Plugin](https://github.com/apigee/apigee-deploy-maven-plugin)
+
+
+### API Proxy and APigee configuration
+
+The folder [./apiproxy](./apiproxy) includes a simple API proxy bundle, a simple Apigee configuration file [./EdgeConfig/edge.json](./EdgeConfig/edge.json) as well as the following resources:
+
+- [.gitlab-ci File](./.gitlab-ci.yml) to define a GitLab CI
+  multi-branch pipeline.
+- [test Folder](./test) to hold the unit and integration
+  tests.
+
 
 ## Target Audience
 
@@ -59,15 +70,6 @@ With GitLab CI/CD for GitHub, users can create a CI/CD project in GitLab connect
 To configure it, clone this Github repository and configure GitLab for GitHub.<BR> GitLab Guide:
 [Using GitLab CI/CD with a GitHub repository](https://docs.gitlab.com/ee/ci/ci_cd_for_external_repos/github_integration.html).
 
-### API Proxy
-
-The folder `airports-cicd-v1` includes a simple API proxy bundle, a simple Apigee configuration file as well as the
-following resources:
-
-- [.gitlab-ci file](./.gitlab-ci.yml) to define a GitLab
-  multi-branch pipeline.
-- [Test Folder](./test) to hold the unit and integration
-  tests.
 
 ## CI/CD Configuration Instructions
 
