@@ -61,7 +61,6 @@ apigeelint:
   artifacts:
     paths:
     - ./apigeelint-out.html
-    expire_in: 30 minute
 
 
 eslint:
@@ -116,4 +115,4 @@ apickli:
   artifacts:
     paths:
     - ./cucumber_report.html
-    expire_in: 30 minute
+    
