@@ -28,17 +28,19 @@ stages:
 set-apigee-env:
   stage: set-apigee-env
   script: |
-            // Main branch for Apigee test environment
+            # Main branch for Apigee test environment
             if ($CI_COMMIT_BRANCH == "main") {
                 APIGEE_DEPLOYMENT_SUFFIX = ""
                 MAVEN_PROFILE = "test"
                 APIGEE_ORG = 'emea-demo7'
-            // Prod branch for Apigee prod environment
+                
+            # Prod branch for Apigee prod environment
             } else if ($CI_COMMIT_BRANCH  == "prod") {
                 APIGEE_DEPLOYMENT_SUFFIX = ""
                 MAVEN_PROFILE = "prod"
                 APIGEE_ORG = 'emea-demo7'
-            // All other branches are deployed as separate proxies with suffix in the test environment
+
+            # All other branches are deployed as separate proxies with suffix in the test environment
             } else {
                 APIGEE_DEPLOYMENT_SUFFIX = $CI_COMMIT_BRANCH ? "-" + $CI_COMMIT_BRANCH.replaceAll("\\W", "-") : "-gitlab"
                 MAVEN_PROFILE = "test"
