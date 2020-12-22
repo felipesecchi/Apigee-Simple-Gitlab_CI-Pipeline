@@ -4,8 +4,12 @@
 
 ## Goal
 
-Reference implementation for a CI/CD pipeline for Apigee using
+Simple implementation for a CI/CD pipeline for Apigee using GitHub repository, 
 [CI/CD with GitLab](https://docs.gitlab.com/ee/ci/introduction/) and the [Apigee Deploy Maven Plugin](https://github.com/apigee/apigee-deploy-maven-plugin).
+
+**This is not an official Google product.**<BR>This implementation is not an official Google product, nor is it part of an official Google product. Support is available on a best-effort basis via GitHub.
+
+***
 
 The CICD pipeline includes:
 
