@@ -9,7 +9,7 @@ The CICD pipeline includes:
 
 - Git branch dependent Apigee environment selection and proxy naming to allow
   deployment of feature branches as separate proxies in the same environment
-- Static Apigee Proxy code analysis using [apickli](https://github.com/apickli/apickli)
+- Static Apigee Proxy code analysis using [apigeelint](https://github.com/apigee/apigeelint)
 - Static JS code analysis using [eslint](https://eslint.org/)
 - Unit JS testing using [mocha](https://mochajs.org/)
 - Integration testing of the deployed proxy using
@@ -42,7 +42,7 @@ The setup described in this reference implementation is based on GitLab-ci. So, 
 The folder `airports-cicd-v1` includes a simple API proxy bundle, a simple Apigee configuration file as well as the
 following resources:
 
-- [Gitlab-ci file](./.gitlab-ci.yml) to define a Jenkins
+- [.gitlab-ci file](./.gitlab-ci.yml) to define a GitLab
   multi-branch pipeline.
 - [Test Folder](./test) to hold the unit and integration
   tests.
