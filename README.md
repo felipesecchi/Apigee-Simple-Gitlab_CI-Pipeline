@@ -35,7 +35,24 @@ The CICD pipeline includes:
 
 ### GitLab
 
-The setup described in this reference implementation is based on GitLab-ci. So, you must have a GitLab account you will use to create a project mirrored with your GitHub repository.
+The setup described in this reference implementation is based on GitLab CI. So, you must have a GitLab account you will use to create a project mirrored with your GitHub repository or to clone this GitHub repository.
+
+#### Option A: **Import** this GitHub repository into a GitLab project.
+
+Using the GitLab importer, you can import your GitHub repositories to GitLab.com or to your self-managed GitLab instance. <BR>GitLab Guide: [Import your project from GitHub to GitLab](https://docs.gitlab.com/ee/user/project/import/github.html#import-your-github-repository-into-gitlab)
+
+
+
+#### Option B: **Mirror** this GitHub repository to a GitLab project.
+
+With GitLab CI/CD for GitHub, users can create a CI/CD project in GitLab connected to an external GitHub code repository. This will automatically configure several components:
+
+- Pull mirroring of the repository.
+- A push webhook to GitLab triggers CI/CD immediately once a code is committed.
+- GitHub project service integration webhooks CI status back to GitHub.
+
+To configure it, clone this Github repository and configure GitLab for GitHub.<BR> GitLab Guide:
+[Using GitLab CI/CD with a GitHub repository](https://docs.gitlab.com/ee/ci/ci_cd_for_external_repos/github_integration.html).
 
 ### API Proxy
 
