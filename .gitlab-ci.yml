@@ -30,25 +30,25 @@ set-apigee-env:
 
             # Main branch for Apigee test environment
             if [ $CI_COMMIT_BRANCH == "main" ]; then
-                APIGEE_DEPLOYMENT_SUFFIX = ""
-                MAVEN_PROFILE = "test"
-                APIGEE_ORG = "$DEFAULT_APIGEE_ORG"
+                APIGEE_DEPLOYMENT_SUFFIX=""
+                MAVEN_PROFILE="test"
+                APIGEE_ORG="$DEFAULT_APIGEE_ORG"
 
             # Prod branch for Apigee prod environment
             else
-              if [ $CI_COMMIT_BRANCH  == "prod" ]; then
-                APIGEE_DEPLOYMENT_SUFFIX = ""
-                MAVEN_PROFILE = "prod"
-                APIGEE_ORG = "$DEFAULT_APIGEE_ORG"
+              if [ $CI_COMMIT_BRANCH == "prod" ]; then
+                APIGEE_DEPLOYMENT_SUFFIX=""
+                MAVEN_PROFILE="prod"
+                APIGEE_ORG="$DEFAULT_APIGEE_ORG"
 
               # All other branches are deployed as separate proxies with suffix in the test environment
               else
                 APIGEE_DEPLOYMENT_SUFFIX=${CI_COMMIT_BRANCH// /-} 
-                MAVEN_PROFILE = "test"
-                APIGEE_ORG = "$DEFAULT_APIGEE_ORG"
+                MAVEN_PROFILE="test"
+                APIGEE_ORG="$DEFAULT_APIGEE_ORG"
               fi
             fi
-            TEST_HOST: "$APIGEE_ORG-$MAVEN_PROFILE.apigee.net"
+            TEST_HOST="$APIGEE_ORG-$MAVEN_PROFILE.apigee.net"
 
 
 install-dependencies:
