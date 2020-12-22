@@ -67,7 +67,7 @@ following resources:
 
 ## CI/CD Configuration Instructions
 
-### Initialize a GitLab (opeion A) GitHub (option B) Repository
+### Initialize a GitLab (option A) or GitHub (option B) Repository
 
 Create a GitLab/GitHub repository to hold your API Proxy. 
 
@@ -101,6 +101,36 @@ git commit -m "initial commit"
 git push -u origin feature/cicd-pipeline
 ```
 
-### GitLab Configuration / Start
+### GitLab Configuration (option B)
 
-Start or configure your GitLab project as described above.
+Start or configure your GitLab project as described in [Using GitLab CI/CD with a GitHub repository](https://docs.gitlab.com/ee/ci/ci_cd_for_external_repos/github_integration.html).
+
+Then, add custom environment variables APIGEE_CREDS_USR and APIGEE_CREDS_PSW, to store your Apigee User ID and password:
+- Go to your project’s Settings > CI/CD and expand the Variables section.
+- Click the Add Variable button.<BR>In the Add variable modal, fill in the details:
+  - Key: APIGEE_CREDS_USR
+  - Value: your Apigee user ID 
+  - Type: Variable
+  - Environment scope: All
+  - Protect variable (Optional): If selected, the variable is only available in pipelines that run on protected branches or tags.
+  - Mask variable (Optional): If selected, the variable’s Value is masked in job logs. The variable fails to save if the value does not meet the masking requirements.
+  - Click the Add Variable button
+- Click again the Add Variable button.<BR>In the Add variable modal, fill in the details:
+  - Key: APIGEE_CREDS_PSW
+  - Value: your Apigee user ID password
+  - Type: Variable
+  - Environment scope: All
+  - Protect variable (Optional): If selected, the variable is only available in pipelines that run on protected branches or tags.
+  - Mask variable (Optional): If selected, the variable’s Value is masked in job logs. The variable fails to save if the value does not meet the masking requirements.
+  - Click the Add Variable button
+
+## Run the pipeline
+
+Using your favorite IDE...
+1.  Update the .gitlab-ci.yml file<BR>
+In global **Variables** section, change **DEFAULT_APIGEE_ORG** value by your target Apigee organization.
+2.  Read creefully the **before_script** section to check if the multibranch rules match your environment naming and configuration.
+3. Save
+4. Commit, Push.. et voila
+
+Use the GitLab UI to monitor your 
