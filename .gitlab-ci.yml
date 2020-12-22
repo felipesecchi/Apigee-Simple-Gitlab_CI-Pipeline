@@ -3,9 +3,7 @@ image: maven:latest
 variables:
   MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
- 
-  TEST_HOST: "$APIGEE_ORG-$MAVEN_PROFILE.apigee.net"
- 
+  DEFAULT_APIGEE_ORG: "emea-demo7"
   # APIGEE_CREDS_USR & APIGEE_CREDS_PSW are stored in CI/CD variable settings
 
 cache:
@@ -28,24 +26,29 @@ stages:
 set-apigee-env:
   stage: set-apigee-env
   script: |
+            APIGEE_DEPLOYMENT_SUFFIX=${CI_COMMIT_BRANCH// /-} 
+            echo $APIGEE_DEPLOYMENT_SUFFIX
+            
             # Main branch for Apigee test environment
-            if ($CI_COMMIT_BRANCH == "main") {
+            if [ $CI_COMMIT_BRANCH == "main" ]; then
                 APIGEE_DEPLOYMENT_SUFFIX = ""
                 MAVEN_PROFILE = "test"
-                APIGEE_ORG = 'emea-demo7'
-                
+                APIGEE_ORG = "$DEFAULT_APIGEE_ORG""
+
             # Prod branch for Apigee prod environment
-            } else if ($CI_COMMIT_BRANCH  == "prod") {
+            else
+              if [ $CI_COMMIT_BRANCH  == "prod" ]; then
                 APIGEE_DEPLOYMENT_SUFFIX = ""
                 MAVEN_PROFILE = "prod"
-                APIGEE_ORG = 'emea-demo7'
+                APIGEE_ORG = "$DEFAULT_APIGEE_ORG"
 
-            # All other branches are deployed as separate proxies with suffix in the test environment
-            } else {
-                APIGEE_DEPLOYMENT_SUFFIX = $CI_COMMIT_BRANCH ? "-" + $CI_COMMIT_BRANCH.replaceAll("\\W", "-") : "-gitlab"
+              # All other branches are deployed as separate proxies with suffix in the test environment
+              else
+                APIGEE_DEPLOYMENT_SUFFIX=${CI_COMMIT_BRANCH// /-} 
                 MAVEN_PROFILE = "test"
-                APIGEE_ORG = 'emea-demo7'
-            }
+                APIGEE_ORG = "$DEFAULT_APIGEE_ORG"
+              fi
+            fi
             TEST_HOST: "$APIGEE_ORG-$MAVEN_PROFILE.apigee.net"
 
 
