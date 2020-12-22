@@ -23,6 +23,7 @@ stages:
   - mvn-deploy
   - test-integration
 
+
 set-apigee-env:
   stage: set-apigee-env
   script: |
