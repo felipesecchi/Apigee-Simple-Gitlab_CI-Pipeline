@@ -15,7 +15,7 @@ cache:
     - .m2/repository/
     - target/
     - node_modules/
-    
+
 
 stages:
   - install-dependencies
@@ -37,10 +37,10 @@ apigeelint:
   stage: static-code-analysis
   image: node:12-alpine 
   script:
-    - ./node_modules/apigeelint/cli.js -s ./apiproxy -f html.js -e PO013 > ./target/apigeelint-out.html
+    - ./node_modules/apigeelint/cli.js -s ./apiproxy -f html.js -e PO013 > ./apigeelint-out.html
   artifacts:
     paths:
-    - ./target/apigeelint-out.html
+    - ./apigeelint-out.html
     expire_in: 30 minute
 
 
@@ -48,10 +48,10 @@ eslint:
   stage: static-code-analysis
   image: node:12-alpine 
   script:
-      - ./node_modules/eslint/bin/eslint.js -c ./.eslintrc-jsc.yml --format html ./apiproxy/resources/jsc > ./target/eslint-out.html
+      - ./node_modules/eslint/bin/eslint.js -c ./.eslintrc-jsc.yml --format html ./apiproxy/resources/jsc > ./eslint-out.html
   artifacts:
     paths:
-    - ./target/eslint-out.html
+    - ./eslint-out.html
 
 mocha:
   stage: unit-test
