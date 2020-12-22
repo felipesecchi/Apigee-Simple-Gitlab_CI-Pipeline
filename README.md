@@ -1,3 +1,5 @@
+[![PyPI status](https://img.shields.io/pypi/status/ansicolortags.svg)](https://pypi.python.org/pypi/ansicolortags/) 
+
 # Apigee CI/CD using Gitlab-ci and Maven, from Github repository
 
 ## Goal
