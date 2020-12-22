@@ -143,18 +143,20 @@ In global **Variables** section, change **DEFAULT_APIGEE_ORG** value by your tar
 3. Save
 4. Commit, Push.. et voila!
 
-Use the GitLab UI to monitor your pipeline execution. Go to your GitLab project > CI/CD > Pipeline.
+Use the GitLab UI to monitor your pipeline execution.
+
+<BR>Go to your GitLab project > CI/CD > Pipeline.
 
 ![GitLab CICD Pipeline](./img/GitLab-Pipeline-1.png)
 
-You can see all stages and jobs running.
+<BR>You can see all stages and jobs running.
 
 ![GitLab CICD Pipeline Animated](./img/animated-pipeline.gif)
 
-And the end of test stages you can download artifacts.
+<BR>And the end of test stages you can download artifacts.
 
 ![GitLab CICD Pipeline artifacts](./img/atifacts.png)
 
-For example, the results of integration tests with Apickli.
+<BR>For example, the results of integration tests with Apickli.
 
 ![GitLab CICD Pipeline apickli](./img/apickli.png)
