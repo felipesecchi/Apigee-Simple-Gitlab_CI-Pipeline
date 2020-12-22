@@ -44,7 +44,6 @@ The setup described in this reference implementation is based on GitLab CI. So, 
 Using the GitLab importer, you can import your GitHub repositories to GitLab.com or to your self-managed GitLab instance. <BR>GitLab Guide: [Import your project from GitHub to GitLab](https://docs.gitlab.com/ee/user/project/import/github.html#import-your-github-repository-into-gitlab)
 
 
-
 #### Option B: **Mirror** this GitHub repository to a GitLab project.
 
 With GitLab CI/CD for GitHub, users can create a CI/CD project in GitLab connected to an external GitHub code repository. This will automatically configure several components:
@@ -68,5 +67,22 @@ following resources:
 
 ## CI/CD Configuration Instructions
 
+### Initialize a GitHub Repository
 
-... to be continued
+Create a GitHub repository to hold your API Proxy. To use the `airports-cicd-v1`
+in a Github repository `github.com/my-user/my-api-proxy-repo` follow these
+steps:
+
+```bash
+cd airports-cicd-v1
+git init
+git remote add origin git@github.com:my-user/my-api-proxy.git
+git checkout -b feature/cicd-pipeline
+git add .
+git commit -m "initial commit"
+git push -u origin feature/cicd-pipeline
+```
+
+### GitLab Configuration / Start
+
+Start or configure your GitLab project as described above.
