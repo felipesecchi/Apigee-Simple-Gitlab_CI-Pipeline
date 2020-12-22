@@ -1,6 +1,6 @@
 [![PyPI status](https://img.shields.io/pypi/status/ansicolortags.svg)](https://pypi.python.org/pypi/ansicolortags/) 
 
-# Apigee CI/CD using GitHub repository, GitLab CI and Maven 
+# Apigee CI/CD using GitHub, GitLab CI and Maven 
 
 ## Goal
 
