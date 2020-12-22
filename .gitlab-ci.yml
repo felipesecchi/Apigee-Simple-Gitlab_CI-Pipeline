@@ -8,7 +8,8 @@ variables:
   APIGEE_ORG: "emea-demo7"
   GIT_BRANCH: "main"
   TEST_HOST: "$APIGEE_ORG-$MAVEN_PROFILE.apigee.net"
-  # AUTHOR_EMAIL, APIGEE_CREDS_USR & APIGEE_CREDS_PSW are stored in CI/CD variable settings
+ 
+  # APIGEE_CREDS_USR & APIGEE_CREDS_PSW are stored in CI/CD variable settings
 
 cache:
   paths:
@@ -33,6 +34,7 @@ install-dependencies:
   script:
     - npm install --silent --no-fund
 
+
 apigeelint:
   stage: static-code-analysis
   image: node:12-alpine 
@@ -53,6 +55,7 @@ eslint:
     paths:
     - ./eslint-out.html
 
+
 mocha:
   stage: unit-test
   image: node:12-alpine 
@@ -62,9 +65,12 @@ mocha:
     paths:
     - ./coverage/index.html
 
+
 mvn-package:
   stage: mvn-package
   script:
+    - if [ "$AUTHOR_EMAIL" == "" ]; then AUTHOR_EMAIL="$GITLAB_USER_EMAIL"; fi
+    - echo $AUTHOR_EMAIL
     - mvn process-resources -P$MAVEN_PROFILE -Dcommit=$GIT_COMMIT -Dbranch=$GIT_BRANCH -Dauthor=$AUTHOR_EMAIL -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX
 
 mvn-config:
