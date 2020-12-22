@@ -3,10 +3,7 @@ image: maven:latest
 variables:
   MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-  MAVEN_PROFILE: "test"
-  APIGEE_DEPLOYMENT_SUFFIX: ""
-  APIGEE_ORG: "emea-demo7"
-  GIT_BRANCH: "main"
+ 
   TEST_HOST: "$APIGEE_ORG-$MAVEN_PROFILE.apigee.net"
  
   # APIGEE_CREDS_USR & APIGEE_CREDS_PSW are stored in CI/CD variable settings
@@ -19,6 +16,7 @@ cache:
 
 
 stages:
+  - set-apigee-env
   - install-dependencies
   - static-code-analysis
   - unit-test
@@ -26,6 +24,27 @@ stages:
   - mvn-config
   - mvn-deploy
   - test-integration
+
+set-apigee-env:
+  stage: set-apigee-env
+  script: |
+            // Main branch for Apigee test environment
+            if ($CI_COMMIT_BRANCH == "main") {
+                APIGEE_DEPLOYMENT_SUFFIX = ""
+                MAVEN_PROFILE = "test"
+                APIGEE_ORG = 'emea-demo7'
+            // Prod branch for Apigee prod environment
+            } else if ($CI_COMMIT_BRANCH  == "prod") {
+                APIGEE_DEPLOYMENT_SUFFIX = ""
+                MAVEN_PROFILE = "prod"
+                APIGEE_ORG = 'emea-demo7'
+            // All other branches are deployed as separate proxies with suffix in the test environment
+            } else {
+                APIGEE_DEPLOYMENT_SUFFIX = $CI_COMMIT_BRANCH ? "-" + $CI_COMMIT_BRANCH.replaceAll("\\W", "-") : "-gitlab"
+                MAVEN_PROFILE = "test"
+                APIGEE_ORG = 'emea-demo7'
+            }
+            TEST_HOST: "$APIGEE_ORG-$MAVEN_PROFILE.apigee.net"
 
 
 install-dependencies:
@@ -70,7 +89,6 @@ mvn-package:
   stage: mvn-package
   script:
     - if [ "$AUTHOR_EMAIL" == "" ]; then AUTHOR_EMAIL="$GITLAB_USER_EMAIL"; fi
-    - echo $AUTHOR_EMAIL
     - mvn process-resources -P$MAVEN_PROFILE -Dcommit=$GIT_COMMIT -Dbranch=$GIT_BRANCH -Dauthor=$AUTHOR_EMAIL -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX
 
 mvn-config:
