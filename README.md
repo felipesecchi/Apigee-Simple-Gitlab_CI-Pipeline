@@ -105,6 +105,9 @@ git commit -m "initial commit"
 git push -u origin feature/cicd-pipeline
 ```
 
+You can also use the GitLab UI and the Import Project wizard to create a Gitlab project from your GitHub repository: [Import Project wizard](https://gitlab.com/projects/new#import_project)
+ 
+
 ### GitLab Configuration (option B)
 
 Start or configure your GitLab project as described in [Using GitLab CI/CD with a GitHub repository](https://docs.gitlab.com/ee/ci/ci_cd_for_external_repos/github_integration.html).
