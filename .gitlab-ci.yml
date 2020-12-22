@@ -100,6 +100,7 @@ mvn-config:
 mvn-deploy-config:
   stage: mvn-deploy
   script:
+    - sed -i "s/target_apigee_env/$MAVEN_PROFILE/g" ./EdgeConfig/edge.json
     - mvn install -P$MAVEN_PROFILE -Dapigee.org=$APIGEE_ORG -Dapigee.username=$APIGEE_CREDS_USR -Dapigee.password=$APIGEE_CREDS_PSW -Dapigee.config.file=./EdgeConfig/edge.json -Dapigee.config.options=update
 
 mvn-deploy-proxy:
@@ -107,7 +108,7 @@ mvn-deploy-proxy:
   script:
     - mvn apigee-enterprise:deploy -P$MAVEN_PROFILE -Dapigee.org=$APIGEE_ORG -Dapigee.username=$APIGEE_CREDS_USR -Dapigee.password=$APIGEE_CREDS_PSW -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFI
 
-test-integration:
+apickli:
   stage: test-integration
   image: node:12-alpine 
   script:

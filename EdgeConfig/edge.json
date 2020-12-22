@@ -1,7 +1,7 @@
 {
     "version":"1.0",
     "envConfig":{
-       "test":{
+       "target_apigee_env":{
           "targetServers":[
              {
                 "name":"HTTPBin",
