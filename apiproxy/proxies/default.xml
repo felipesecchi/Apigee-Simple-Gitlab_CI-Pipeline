@@ -32,7 +32,6 @@
       <Response>
         <Step>
           <Name>Javascript.AirportsFilter</Name>
-          
         </Step>
       </Response>
     </Flow>
