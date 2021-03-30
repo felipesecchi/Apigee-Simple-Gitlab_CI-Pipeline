@@ -189,7 +189,7 @@ Start or configure your GitLab project as described in [Using GitLab CI/CD with 
 Using your favorite IDE...
 1.  Update the **.gitlab-ci.yml** file<BR>
 In global **Variables** section, change **DEFAULT_APIGEE_ORG**, **DEFAULT_APIGEE_ENV**, **TEST_HOST** values by your target Apigee organization and environment.<BR>
-Update API_VERSION variable to define Apigee target: `googleapi` = Apigee X / Apigee hybrid, `apigeeapi` = Apigee Edge
+Update **API_VERSION** variable to define Apigee target: `googleapi` = Apigee X / Apigee hybrid, `apigeeapi` = Apigee Edge
 2.  Read carefully the **before_script** section to check if the multibranch rules match your Git and Apigee environment naming and configuration.
 3. Save
 4. Commit, Push.. et voila!
