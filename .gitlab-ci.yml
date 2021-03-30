@@ -121,33 +121,25 @@ mvn-package:
   script:
     - if [ "$AUTHOR_EMAIL" == "" ]; then AUTHOR_EMAIL="$GITLAB_USER_EMAIL"; fi
     - mvn process-resources -P$API_VERSION -Dcommit=$GIT_COMMIT -Dbranch=$GIT_BRANCH -Dauthor=$AUTHOR_EMAIL -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX
-  only:
-    variables:
-      - $API_VERSION == "googleapi" 
 
 mvn-config:
   stage: mvn-config
   script:
     - mvn apigee-enterprise:configure -P$API_VERSION -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX 
-  only:
-    variables:
-      - $API_VERSION == "googleapi" 
 
 mvn-deploy-proxy-xhybrid:
   stage: mvn-deploy-proxy
   script:
     - mvn apigee-enterprise:deploy -Pgoogleapi -Denv=$APIGEE_ENV -Dsa=$GCP_SERVICE_ACCCOUNT -Dorg=$APIGEE_ORG -Ddeployment.suffix=$APIGEE_BUILD_DEPLOYMENT_SUFFIX 
-  only:
-    variables:
-      - $API_VERSION == "googleapi" 
+  rules:
+    - if: $API_VERSION == "googleapi"
 
 mvn-deploy-proxy-edge:
   stage: mvn-deploy-proxy
   script:
       - mvn apigee-enterprise:deploy -Papigeeapi -Dorg=$APIGEE_ORG -Denv=$APIGEE_ENV -Dpassword=$APIGEE_CREDS_PSW -Dusername=$APIGEE_CREDS_USR -Ddeployment.suffix=$APIGEE_BUILD_DEPLOYMENT_SUFFIX 
-  only:
-    variables:
-      - $API_VERSION == "apigeeapi" 
+  rules:
+    - if: $API_VERSION == "apigeeapi"
 
 
 
