@@ -5,29 +5,28 @@
     "author": "danistrebel",
     "license": "Apache-2.0",
     "licenses": [
-      {
-        "type": "Apache-2.0",
-        "url": "http://www.apache.org/licenses/LICENSE-2.0"
-      }
+        {
+            "type": "Apache-2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0"
+        }
     ],
     "scripts": {
-      "test": "npm run unit-test && npm run integration-test",
-      "unit-test": "nyc --reporter=text mocha --recursive \"./test/unit/*.js\"",
-      "integration-test": "cucumber-js ./test/integration",
-      "lint": "./node_modules/apigeelint/cli.js -s ./apiproxy -f html.js -e PO013"
+        "test": "npm run unit-test && npm run integration-test",
+        "unit-test": "nyc --reporter=text mocha --recursive \"./test/unit/*.js\"",
+        "integration-test": "cucumber-js ./test/integration",
+        "lint": "./node_modules/apigeelint/cli.js -s ./apiproxy -f html.js -e PO013"
     },
     "dependencies": {
-      "cucumber-html-reporter": "latest",
-      "apickli": "latest",
-      "apigeelint": "^0.4.8",
-      "cucumber": "^6.0.5",
-      "eslint": "^7.0.0",
-      "eslint-config-google": "^0.14.0",
-      "eslint-config-prettier": "^6.11.0",
-      "prettier": "^2.0.5",
-      "mocha": "^7.2.0",
-      "nyc": "^15.0.1",
-      "sinon": "^9.0.2"
+        "apickli": "latest",
+        "apigeelint": "^0.4.8",
+        "cucumber": "^6.0.5",
+        "cucumber-html-reporter": "latest",
+        "eslint": "^7.0.0",
+        "eslint-config-google": "^0.14.0",
+        "eslint-config-prettier": "^6.11.0",
+        "mocha": "^7.2.0",
+        "nyc": "^15.0.1",
+        "prettier": "^2.0.5",
+        "sinon": "^9.0.2"
     }
-  }
-  
+}
