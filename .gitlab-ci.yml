@@ -1,8 +1,17 @@
 image: maven:latest
 
 variables:
-  DEFAULT_APIGEE_ORG: "poc-michelin"
-  # APIGEE_CREDS_USR & APIGEE_CREDS_PSW are stored in GitLab CI/CD variable settings
+  DEFAULT_APIGEE_ORG: "lalevee-emea-demo7"
+  DEFAULT_APIGEE_ENV: "eval"
+  TEST_HOST: x-demo7.lalevee.org
+  #TEST_HOST: "$DEFAULT_APIGEE_ORG-$DEFAULT_APIGEE_ENV.apigee.net"
+
+
+  API_VERSION: "googleapi" 
+  # or API_VERSION: "apigeeapi"
+
+  # GCP_SERVICE_ACCCOUNT, APIGEE_CREDS_USR & APIGEE_CREDS_PSW are stored in GitLab CI/CD variable settings
+  # GCP_SERVICE_ACCCOUNT variable, type "File" 
 
 cache:
   paths:
@@ -11,43 +20,43 @@ cache:
     - node_modules/
 
 
-
 before_script: 
   - |
 
       # Main branch for Apigee test environment
       if [ $CI_COMMIT_BRANCH == "main" ]; then
             APIGEE_DEPLOYMENT_SUFFIX=""
-            MAVEN_PROFILE="test"
+            APIGEE_ENV="$DEFAULT_APIGEE_ENV"
             APIGEE_ORG="$DEFAULT_APIGEE_ORG"
 
         # Prod branch for Apigee prod environment
         else
           if [ $CI_COMMIT_BRANCH == "prod" ]; then
             APIGEE_DEPLOYMENT_SUFFIX=""
-            MAVEN_PROFILE="prod"
+            APIGEE_ENV="prod"
             APIGEE_ORG="$DEFAULT_APIGEE_ORG"
 
           # All other branches are deployed as separate proxies with suffix in the test environment
           else
             APIGEE_DEPLOYMENT_SUFFIX=${CI_COMMIT_BRANCH// /-} 
-            MAVEN_PROFILE="test"
+            APIGEE_ENV="$DEFAULT_APIGEE_ENV"
             APIGEE_ORG="$DEFAULT_APIGEE_ORG"
           fi
         fi
-        TEST_HOST="$APIGEE_ORG-$MAVEN_PROFILE.apigee.net"
 
 
 stages:
   - install-dependencies
   - static-code-analysis
   - unit-test
+  - mvn-deploy-config
   - mvn-package
   - mvn-config
-  - mvn-deploy
+  - mvn-deploy-proxy
   - test-integration
 
 
+# install-dependencies
 install-dependencies:
   stage: install-dependencies
   image: node:12-alpine 
@@ -55,6 +64,8 @@ install-dependencies:
     - npm install --silent --no-fund
 
 
+
+# Static code analysis (Proxy, JS): static-code-analysis
 apigeelint:
   stage: static-code-analysis
   image: node:12-alpine 
@@ -64,7 +75,6 @@ apigeelint:
     paths:
     - ./apigeelint-out.html
 
-
 eslint:
   stage: static-code-analysis
   image: node:12-alpine 
@@ -73,7 +83,6 @@ eslint:
   artifacts:
     paths:
     - ./eslint-out.html
-
 
 mocha:
   stage: unit-test
@@ -85,28 +94,65 @@ mocha:
     - ./coverage/index.html
 
 
+  
+# Deploy config (KVM, target servers, etc.): mvn-deploy-config
+mvn-deploy-config-edge:
+  stage: mvn-deploy-config
+  script:
+    - sed -i "s/target_apigee_env/$APIGEE_ENV/g" ./EdgeConfig/edge.json
+    - mvn install -Papigeeapi -Dapigee.org=$APIGEE_ORG -Denv=$APIGEE_ENV -Dapigee.username=$APIGEE_CREDS_USR -Dapigee.password=$APIGEE_CREDS_PSW -Dapigee.config.file=./EdgeConfig/edge.json -Dapigee.config.options=update
+  only:
+    variables:
+      - $API_VERSION == "apigeeapi" 
+
+mvn-deploy-config-xhybrid:
+  stage: mvn-deploy-config
+  script:
+    - sed -i "s/target_apigee_env/$APIGEE_ENV/g" ./EdgeConfig/edge.json
+    - mvn install -Pgoogleapi -Dapigee.org=$APIGEE_ORG -Denv=$APIGEE_ENV -Dsa=$GCP_SERVICE_ACCCOUNT -Dapigee.config.file=./EdgeConfig/edge.json -Dapigee.config.options=update
+  only:
+    variables:
+      - $API_VERSION == "googleapi"  
+
+
+
+# Deploy Proxy: mvn-package, mvn-config, mvn-deploy-proxy
 mvn-package:
   stage: mvn-package
   script:
     - if [ "$AUTHOR_EMAIL" == "" ]; then AUTHOR_EMAIL="$GITLAB_USER_EMAIL"; fi
-    - mvn process-resources -P$MAVEN_PROFILE -Dcommit=$GIT_COMMIT -Dbranch=$GIT_BRANCH -Dauthor=$AUTHOR_EMAIL -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX
+    - mvn process-resources -P$API_VERSION -Dcommit=$GIT_COMMIT -Dbranch=$GIT_BRANCH -Dauthor=$AUTHOR_EMAIL -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX
+  only:
+    variables:
+      - $API_VERSION == "googleapi" 
 
 mvn-config:
   stage: mvn-config
   script:
-    - mvn apigee-enterprise:configure -P$MAVEN_PROFILE -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX 
+    - mvn apigee-enterprise:configure -P$API_VERSION -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX 
+  only:
+    variables:
+      - $API_VERSION == "googleapi" 
 
-mvn-deploy-config:
-  stage: mvn-deploy
+mvn-deploy-proxy-xhybrid:
+  stage: mvn-deploy-proxy
   script:
-    - sed -i "s/target_apigee_env/$MAVEN_PROFILE/g" ./EdgeConfig/edge.json
-    - mvn install -P$MAVEN_PROFILE -Dapigee.org=$APIGEE_ORG -Dapigee.username=$APIGEE_CREDS_USR -Dapigee.password=$APIGEE_CREDS_PSW -Dapigee.config.file=./EdgeConfig/edge.json -Dapigee.config.options=update
+    - mvn apigee-enterprise:deploy -Pgoogleapi -Denv=$APIGEE_ENV -Dsa=$GCP_SERVICE_ACCCOUNT -Dorg=$APIGEE_ORG -Ddeployment.suffix=$APIGEE_BUILD_DEPLOYMENT_SUFFIX 
+  only:
+    variables:
+      - $API_VERSION == "googleapi" 
 
-mvn-deploy-proxy:
-  stage: mvn-deploy
+mvn-deploy-proxy-edge:
+  stage: mvn-deploy-proxy
   script:
-    - mvn apigee-enterprise:deploy -P$MAVEN_PROFILE -Dapigee.org=$APIGEE_ORG -Dapigee.username=$APIGEE_CREDS_USR -Dapigee.password=$APIGEE_CREDS_PSW -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFI
+      - mvn apigee-enterprise:deploy -Papigeeapi -Dorg=$APIGEE_ORG -Denv=$APIGEE_ENV -Dpassword=$APIGEE_CREDS_PSW -Dusername=$APIGEE_CREDS_USR -Ddeployment.suffix=$APIGEE_BUILD_DEPLOYMENT_SUFFIX 
+  only:
+    variables:
+      - $API_VERSION == "apigeeapi" 
 
+
+
+# Integration test: test-integration
 apickli:
   stage: test-integration
   image: node:12-alpine 
@@ -117,4 +163,5 @@ apickli:
   artifacts:
     paths:
     - ./cucumber_report.html
+
 
