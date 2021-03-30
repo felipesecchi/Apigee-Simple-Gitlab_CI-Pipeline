@@ -125,7 +125,7 @@ mvn-package:
 mvn-config:
   stage: mvn-config
   script:
-    - mvn apigee-enterprise:configure -P$API_VERSION -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX 
+    - mvn apigee-enterprise:configure -P$API_VERSION -Dorg=$APIGEE_ORG -Denv=$APIGEE_ENV  -Ddeployment.suffix=$APIGEE_DEPLOYMENT_SUFFIX 
 
 mvn-deploy-proxy-xhybrid:
   stage: mvn-deploy-proxy
