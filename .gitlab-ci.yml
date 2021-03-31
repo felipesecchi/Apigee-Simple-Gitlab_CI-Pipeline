@@ -96,6 +96,7 @@ mocha:
 
 
   
+  
 # Deploy config (KVM, target servers, etc.): mvn-deploy-config
 mvn-deploy-config-edge:
   stage: mvn-deploy-config
