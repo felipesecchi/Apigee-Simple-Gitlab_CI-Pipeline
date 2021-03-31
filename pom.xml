@@ -69,7 +69,120 @@ limitations under the License.
 				<apigee.username>${username}</apigee.username>
 				<apigee.password>${password}</apigee.password>
 			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.apigee.edge.config</groupId>
+						<artifactId>apigee-config-maven-plugin</artifactId>
+						<version>1.4.3</version>
+						<executions>
+							<execution>
+								<id>create-config-cache</id>
+								<phase>install</phase>                        
+								<goals>
+									<goal>caches</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>create-config-kvm</id>
+								<phase>install</phase>                        
+								<goals>
+									<goal>keyvaluemaps</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>create-config-resourcefiles</id>
+								<phase>install</phase>                        
+								<goals>
+									<goal>resourcefiles</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>create-config-keystores</id>
+								<phase>install</phase>                        
+								<goals>
+									<goal>keystores</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>create-config-aliases</id>
+								<phase>install</phase>                        
+								<goals>
+									<goal>aliases</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>create-config-references</id>
+								<phase>install</phase>                        
+								<goals>
+									<goal>references</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>create-config-targetserver</id>
+								<phase>install</phase>                        
+								<goals>
+									<goal>targetservers</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>create-config-apiproduct</id>
+								<phase>install</phase>                        
+								<goals>
+									<goal>apiproducts</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>create-config-developer</id>
+								<phase>install</phase>                        
+								<goals>
+									<goal>developers</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>create-config-app</id>
+								<phase>install</phase>                        
+								<goals>
+									<goal>apps</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>create-config-reports</id>
+								<phase>install</phase>                        
+								<goals>
+									<goal>reports</goal>
+								</goals>
+							</execution>
+							<execution> 
+								<id>create-config-flowhooks</id>
+								<phase>install</phase>
+								<goals>
+									<goal>flowhooks</goal>
+								</goals>
+							</execution>
+							<execution> 
+								<id>create-config-userroles</id>
+								<phase>install</phase>
+								<goals>
+									<goal>userroles</goal>
+								</goals>
+							</execution>
+							<execution> 
+								<id>import-keys</id>
+								<phase>install</phase>
+								<goals>
+									<goal>importKeys</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>            
+				</plugins>
+			</build>
+	
 		</profile>
+
+
+
 		<profile>
 			<!-- Next Generation SaaS and hybrid -->
 			<id>googleapi</id>
@@ -79,6 +192,82 @@ limitations under the License.
 				<apigee.bearer>${token}</apigee.bearer> <!-- this takes precedence over service account file -->
 				<apigee.serviceaccount.file>${sa}</apigee.serviceaccount.file>
 			</properties>
+			<build>
+				<plugins>
+					<!-- APIGEE CONFIG -->
+					<!-- apigee deploy config 2.1.0 -->
+					<plugin>
+						<groupId>com.apigee.edge.config</groupId>
+						<artifactId>apigee-config-maven-plugin</artifactId>
+						<version>2.1.0</version>
+						<executions>
+							<execution>
+								<id>create-config-references</id>
+								<phase>install</phase>                        
+								<goals>
+									<goal>references</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>create-config-targetserver</id>
+								<phase>install</phase>                        
+								<goals>
+									<goal>targetservers</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>create-config-kvm</id>
+								<phase>install</phase>                        
+								<goals>
+									<goal>keyvaluemaps</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>create-config-resourcefiles</id>
+								<phase>install</phase>                        
+								<goals>
+									<goal>resourcefiles</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>create-config-apiproduct</id>
+								<phase>install</phase>                        
+								<goals>
+									<goal>apiproducts</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>create-config-developer</id>
+								<phase>install</phase>                        
+								<goals>
+									<goal>developers</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>create-config-app</id>
+								<phase>install</phase>                        
+								<goals>
+									<goal>apps</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>create-config-reports</id>
+								<phase>install</phase>                        
+								<goals>
+									<goal>reports</goal>
+								</goals>
+							</execution>
+							<execution> 
+								<id>create-config-flowhooks</id>
+								<phase>install</phase>
+								<goals>
+									<goal>flowhooks</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin> 
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 
@@ -94,53 +283,7 @@ limitations under the License.
 		</pluginManagement>
 
 		<plugins>
-			<!-- APIGEE CONFIG -->
-			<!-- apigee deeploy config -->
-		    <plugin>
-                <groupId>com.apigee.edge.config</groupId>
-                <artifactId>apigee-config-maven-plugin</artifactId>
-                <version>${apigee.plugin.version}</version>
-                <executions>
-
-                    <execution>
-                        <id>create-config-targetserver</id>
-                        <phase>install</phase>                        
-                        <goals>
-                            <goal>targetservers</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>create-config-kvm</id>
-                        <phase>install</phase>                        
-                        <goals>
-                            <goal>keyvaluemaps</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>create-config-apiproduct</id>
-                        <phase>install</phase>                        
-                        <goals>
-                            <goal>apiproducts</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>create-config-developer</id>
-                        <phase>install</phase>                        
-                        <goals>
-                            <goal>developers</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>create-config-app</id>
-                        <phase>install</phase>                        
-                        <goals>
-                            <goal>apps</goal>
-                        </goals>
-                    </execution>
-
-                </executions>
-            </plugin>   
-
+			
 			<!-- APIGEE DEPLOY -->
 			<!-- copy the full apiproxy folder to target folder -->
 			<plugin>
@@ -246,8 +389,8 @@ limitations under the License.
 					</execution>
 				</executions>
 			</plugin>
-
+	
+		
 		</plugins>
 	</build>
-
 </project>
