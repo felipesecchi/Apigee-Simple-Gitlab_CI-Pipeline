@@ -18,6 +18,7 @@
     },
     "dependencies": {
         "apickli": "latest",
+        "JSONPath": "^0",
         "apigeelint": "^0.4.8",
         "cucumber": "^6.0.5",
         "cucumber-html-reporter": "latest",
