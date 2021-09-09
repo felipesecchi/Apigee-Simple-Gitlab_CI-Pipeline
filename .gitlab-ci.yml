@@ -47,6 +47,7 @@ before_script:
         fi
 
 
+
 stages:
   - install-dependencies
   - static-code-analysis
